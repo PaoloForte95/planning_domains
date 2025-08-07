@@ -1,0 +1,3 @@
+[submodule "planonto"]
+	path = planonto
+	url = https://github.com/Dorteel/AI-Planning-Ontology
