@@ -1,0 +1,2 @@
+1. Stack sand on dirt in wp3, and stack cement_block on coal in wp4
+2. Ordering: dirt, sand, coal, cement_block

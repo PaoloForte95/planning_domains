@@ -1,0 +1,2 @@
+1. Move sand to wp3 and gravel to wp4
+2. Ordering: sand, gravel

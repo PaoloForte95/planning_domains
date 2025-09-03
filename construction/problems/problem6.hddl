@@ -1,0 +1,35 @@
+(define (problem object_arrangement_problem_stacking_ordered)
+    (:domain domain_htn)
+    (:objects
+        coal cement_block brick - material
+        v1 - vehicle
+        wp0 wp1 wp2 wp3 wp4 wp5 - location
+    )
+    (:init
+        ; Initial location of the materials
+        (at coal wp1)
+        (at cement_block wp2)
+        (at brick wp5)
+
+        ; Initial location of the vehicle
+        (at v1 wp0)
+
+        ; Locations that are initially free
+        (free wp1)
+        (free wp2)
+        (free wp3)
+        (free wp4)
+        (free wp5)
+    )
+    (:htn
+		:subtasks (and
+            ; Goal tasks to be achieved
+            (task0 (stack_pile brick cement_block wp3))
+            (task1 (move_pile coal wp4))
+        )
+        :ordering (and
+            ; Enforce the order: stack operation before moving coal
+            (< task0 task1)
+        )
+	)
+)

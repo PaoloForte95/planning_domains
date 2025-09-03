@@ -1,0 +1,3 @@
+1. Move sand to wp3 and coal to wp4
+2. Ordering: coal, sand
+3. Note that in the initial state coal is stacked on sand

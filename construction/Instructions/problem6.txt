@@ -1,0 +1,2 @@
+1. Stack brick on cement_block in wp3 and move coal to wp4
+2. Ordering cement_block, brick and coal

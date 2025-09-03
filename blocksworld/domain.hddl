@@ -1,0 +1,142 @@
+(define (domain blocksworld)
+    (:requirements :negative-preconditions :typing :hierarchy :universal-preconditions :method-preconditions)
+    
+    (:types
+        block 
+        robot
+    )
+
+    (:predicates 
+        (on ?x - block ?y - block)
+        (ontable ?x - block)
+        (clear ?x - block)
+        (handempty ?x - robot)
+        (handfull ?x - robot)
+        (holding ?x - block)
+    )
+
+    (:task move_block
+		:parameters (?b1 - block)
+	)
+
+    (:task stack
+		:parameters (?b1 - block ?b2 - block)
+	)
+
+    (:method m_move_block_0
+		:parameters (?b - block ?r - robot)
+		:task (move_block ?b)
+		:subtasks (and
+		 (task0 (pick-up ?b ?r))
+         (task1 (put-down ?b ?r))
+		)
+		:ordering (and
+			(< task0 task1)
+		)
+	)
+
+    (:method m_move_block_1
+		:parameters (?b1 - block ?b2 - block ?r - robot)
+		:task (move_block ?b1)
+        :precondition (and
+            (on ?b1 ?b2)
+        )
+		:subtasks (and
+		 (task0 (unstack ?b1 ?b2 ?r))
+         (task1 (put-down ?b1 ?r))
+		)
+		:ordering (and
+			(< task0 task1)
+		)
+	)
+
+    (:method m_stack_block_0
+		:parameters (?b1 - block ?b2 - block ?r - robot)
+		:task (stack ?b1 ?b2)
+		:subtasks (and
+		 (task0 (pick-up ?b1 ?r))
+         (task1 (stack_block ?b1 ?b2 ?r))
+		)
+		:ordering (and
+			(< task0 task1)
+		)
+	)
+
+    (:method m_stack_block_1
+		:parameters (?b1 - block ?b2 - block ?b3 - block ?r - robot)
+		:task (stack ?b1 ?b3)
+		:subtasks (and
+		 (task0 (unstack ?b1 ?b2 ?r))
+         (task1 (stack_block ?b1 ?b3 ?r))
+		)
+		:ordering (and
+			(< task0 task1)
+		)
+	)
+
+    
+    (:action pick-up
+        :parameters (?x - block ?robot - robot)
+        :precondition (and
+            (clear ?x) 
+            (ontable ?x) 
+            (handempty ?robot)
+        )
+        :effect (and
+            (not (ontable ?x))
+            (not (clear ?x))
+            (not (handempty ?robot))
+            (handfull ?robot)
+            (holding ?x)
+        )
+    )
+
+    (:action put-down
+        :parameters (?x - block ?robot - robot)
+        :precondition (and 
+            (holding ?x)
+            (handfull ?robot)
+        )
+        :effect (and 
+            (not (holding ?x))
+            (clear ?x)
+            (handempty ?robot)
+            (not (handfull ?robot))
+            (ontable ?x))
+        )
+
+        
+    (:action stack_block
+        :parameters (?x - block ?y - block ?robot - robot)
+        :precondition (and
+            (holding ?x) 
+            (clear ?y)
+            (handfull ?robot)
+        )
+        :effect (and 
+            (not (holding ?x))
+            (not (clear ?y))
+            (clear ?x)
+            (handempty ?robot)
+            (not (handfull ?robot))
+            (on ?x ?y)
+        )
+    )
+
+    (:action unstack
+        :parameters (?x - block ?y - block ?robot - robot)
+        :precondition (and
+            (on ?x ?y)
+            (clear ?x)
+            (handempty ?robot)
+        )
+        :effect (and 
+            (holding ?x)
+            (clear ?y)
+            (not (clear ?x))
+            (not (handempty ?robot))
+            (handfull ?robot)
+            (not (on ?x ?y))
+        )
+    )
+)

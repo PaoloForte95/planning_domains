@@ -1,0 +1,42 @@
+
+(define (problem block_world)
+    (:domain block_world)
+    (:objects
+        blue cyan orange pink green red yellow purple - block
+        robot1 - robot
+    )
+    (:init
+        (ontable blue)
+        (ontable cyan)
+        (ontable orange)
+        (ontable pink)
+        (ontable green)
+        (ontable red)
+        (ontable yellow)
+        (ontable purple)
+        (clear blue)
+        (clear cyan)
+        (clear orange)
+        (clear green)
+        (clear red)
+        (clear yellow)
+        (clear purple)
+        (clear green)
+        (clear pink)
+        (handempty robot1)
+    )
+    (:goal
+        (and
+            (on cyan orange)
+            (on orange yellow)
+            (on yellow red)
+            (on red green)
+            (on green pink)
+            (ontable pink)
+            (on purple blue)
+            (ontable blue)
+            (clear cyan)
+            (clear purple)
+        )
+    )
+)

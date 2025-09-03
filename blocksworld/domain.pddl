@@ -1,4 +1,4 @@
-(define (domain blocksworld)
+(define (domain block_world)
     (:requirements :strips :typing)
     (:types block robot)
     (:predicates 

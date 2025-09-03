@@ -1,0 +1,43 @@
+
+(define (problem object_arrangement)
+    (:domain blocksworld)
+    
+    (:objects
+        green - block
+        yellow - block
+        pink - block
+        red - block
+        robot1 - robot
+    )
+
+     (:htn
+        :subtasks (and
+            (task0 (stack yellow green))
+            (task1 (stack red yellow))
+            (task2 (stack pink red))
+        )
+        :ordering (and
+            (< task0 task1)
+            (< task1 task2)
+        )
+    )
+    
+    (:init
+        ;; All blocks are initially on the table
+        (ontable green)
+        (ontable yellow)
+        (ontable pink)
+        (ontable red)
+        
+        ;; All blocks are initially clear (nothing on top)
+        (clear green)
+        (clear yellow)
+        (clear pink)
+        (clear red)
+        
+        ;; Robot hand is initially empty
+        (handempty robot1)
+    )
+    
+   
+)

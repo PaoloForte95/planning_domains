@@ -1,0 +1,2 @@
+Create a stack of blocks: yellow over orange over green.
+Create another stack of blocks: pink over blue over red over cyan.

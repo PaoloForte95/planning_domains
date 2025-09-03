@@ -1,4 +1,0 @@
-unified-planning
-sentence-transformers
-rdflib
-owlready2

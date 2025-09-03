@@ -1,0 +1,2 @@
+1. Move sand to wp3, dirt to wp4, and cement to wp5
+2. Ordering: sand, dirt, cement

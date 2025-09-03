@@ -1,0 +1,2 @@
+1. Move gravel to wp3, coal to wp4 and stack cement_block on cement_brick in wp5
+2. Ordering: gravel, coal, cement_brick, cement_block

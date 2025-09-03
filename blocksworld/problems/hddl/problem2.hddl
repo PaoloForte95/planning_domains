@@ -1,0 +1,40 @@
+(define (problem object_arrangement)
+  (:domain blocksworld)
+  
+  (:objects
+    pink - block
+    purple - block
+    blue - block
+    red - block
+    robot1 - robot
+  )
+
+    (:htn
+    :subtasks (and
+      (task0 (move_block pink))     ; Move pink from current position to table
+      (task1 (move_block purple))   ; Move purple from current position to table  
+      (task2 (stack purple pink))   ; Stack purple on pink
+      (task3 (stack blue purple))   ; Stack blue on purple
+      (task4 (stack red blue))      ; Stack red on blue (final: red on blue on purple on pink)
+    )
+    :ordering (and
+      (< task0 task1)
+      (< task1 task2)
+      (< task2 task3)
+      (< task3 task4)
+    )
+  )
+  
+  (:init
+    ; Initial state: pink on purple, purple on blue, blue on table, red on table
+    (on pink purple)
+    (on purple blue)
+    (ontable blue)
+    (ontable red)
+    (clear pink)
+    (clear red)
+    (handempty robot1)
+  )
+  
+
+)

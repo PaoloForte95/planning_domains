@@ -1,0 +1,2 @@
+1. Move brick to wp3 and dirt to wp4
+2. Ordering: dirt, brick

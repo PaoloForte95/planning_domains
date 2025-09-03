@@ -1,0 +1,2 @@
+1. Move coal to wp3 and cement_block to wp4
+2. Ordering: coal, cement_block
