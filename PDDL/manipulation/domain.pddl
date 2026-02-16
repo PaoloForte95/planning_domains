@@ -1,5 +1,5 @@
 (define (domain manipulation_domain)
-	(:requirements :strips :typing :fluents :negative-preconditions)
+	(:requirements :strips :typing :fluents :universal-preconditions :negative-preconditions)
 	(:types
 		location - object
 		locatable - object
