@@ -1,0 +1,222 @@
+(define (domain domain_htn)
+	(:requirements :negative-preconditions :typing :hierarchy :universal-preconditions :method-preconditions)
+	(:types
+		locatable - object
+		location  - object
+		robot - locatable
+		item - locatable
+		tool - locatable
+		container - locatable
+	)
+	(:predicates
+		(in ?arg0 - locatable ?arg1 - locatable)
+		(at ?arg0 - locatable ?arg1 - location)
+		(on ?arg0 - locatable ?arg1 - locatable)
+		(free ?arg1 - location)
+		(open ?arg1 - container)
+		(is_status ?item - locatable) ;;use this to extend the status
+		(has ?robot - locatable ?tool - tool) ;;use this to check whenever the robot can perform an action
+	)
+
+	(:task pick_and_place
+		:parameters (?ob1 - locatable ?l - location)
+	)
+	
+	(:task go_to
+		:parameters (?v - locatable ?l - location)
+	)
+	
+	(:task open_method
+		:parameters (?contatiner - arg1)
+	)
+	
+	
+	(:method m_pick_and_place_ordering_0
+		:parameters (?l1 - location ?l2 - location ?m - locatable ?v - robot)
+		:task (pick_and_place ?m ?l2)
+		:subtasks (and
+		 (task0 (go_to ?v ?l1))
+		 (task1 (pick ?v ?l1 ?m))
+		 (task2 (go_to ?v ?l2))
+		 (task3 (place ?v ?l2 ?m))
+		)
+		:ordering (and
+			(< task0 task1)
+			(< task1 task2)
+			(< task2 task3)
+		)
+	)
+
+
+
+	(:method m_i_am_there_ordering_0
+		:parameters (?l - location ?v - robot)
+		:task (go_to ?v ?l)
+		:subtasks (and
+		 (task0 (noop ?v ?l))
+		)
+	)
+	
+	(:method m_drive_to_ordering_0
+		:parameters (?l1 - location ?l2 - location ?v - robot)
+		:task (go_to ?v ?l2)
+		:subtasks (and
+		 (task0 (drive ?v ?l1 ?l2))
+		)
+	)
+	
+	(:method m_drive_to_ordering_1
+		:parameters (?l1 - location ?l2 - location ?v - robot)
+		:task (go_to ?v ?l2)
+		:subtasks (and
+		 (task0 (transport ?v ?l1 ?l2))
+		)
+	)
+	
+	(:method m_open_1
+		:parameters (?cont - containter ?l1 - location ?r - robot)
+		:task (open_method ?cont ?r)
+		:subtasks (and
+		 (task0 (go_to ?r ?l1))
+		 (task1 (open ?cont))
+		)
+		:ordering (and
+			(< task0 task1)
+		)
+	)
+
+
+
+	;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;; ACTION ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+	
+	(:action drive
+		:parameters (?v - robot ?l1 - location ?l2 - location)
+		:precondition 
+			(and
+				(at ?v ?l1)
+				(free ?l2)
+				(forall (?m - item)
+						(not (in ?m ?v))
+				)
+				
+			)
+		:effect
+			(and
+				(not (at ?v ?l1))
+				(at ?v ?l2)
+				(free ?l1)
+				(not (free ?l2))
+			)
+	)
+
+	(:action transport
+		:parameters (?v - robot ?l1 - location ?l2 - location ?m - item)
+		:precondition 
+			(and
+				(at ?v ?l1)
+				(free ?l2)
+				(in ?m ?v)
+			)
+		:effect
+			(and
+				(not (at ?v ?l1))
+				(at ?v ?l2)
+				(free ?l1)
+				(not (free ?l2))
+			)
+	)
+
+	(:action noop
+		:parameters (?v - robot ?l2 - location)
+		:precondition 
+			(and
+				(at ?v ?l2)
+			)
+		:effect ()
+	)
+	
+	(:action open
+		:parameters (?c - container)
+		:precondition 
+			(and
+			)
+		:effect 
+		   (and
+				(open ?c)
+			)
+	)
+
+
+
+	(:action pick
+		:parameters (?v - robot ?l - location ?m - item)
+		:precondition 
+			(and
+				(at ?v ?l)
+				(can_load ?v)
+				(at ?m ?l)
+				(forall (?m2 - item)
+						(not (on ?m2 ?m))
+				)
+			)
+		:effect
+			(and
+				(in ?m ?v)
+				(not (at ?m ?l))
+			)
+	)
+
+	(:action place
+		:parameters (?v - robot ?l - location ?m - item)
+		:precondition 
+			(and
+				(at ?v ?l)
+				(in ?m ?v)
+				(forall (?m2 - item)
+					(not (at ?m2 ?l))
+				)
+			)
+		:effect
+			(and
+				(not (in ?m ?v))
+				(at ?m ?l)
+			)
+	)
+
+	(:action stack
+		:parameters (?v - robot ?l - location ?m1 - item ?m2 - item)
+		:precondition 
+			(and
+				(at ?v ?l)
+				(in ?m1 ?v)
+				(at ?m2 ?l)
+			)
+		:effect
+			(and
+				(not (in ?m1 ?v))
+				(at ?m1 ?l)
+				(on ?m1 ?m2)
+			)
+	)
+
+	(:action unstack
+		:parameters (?v - robot ?l - location ?m1 - item ?m2 - item)
+		:precondition 
+			(and
+				(at ?v ?l)
+				(at ?m2 ?l)
+				(at ?m1 ?l)
+				(forall (?m3 - item)
+					(not (on ?m3 ?m1))
+				)
+				(on ?m1 ?m2)
+			)
+		:effect
+			(and
+				(not (on ?m1 ?m2))
+				(in ?m1 ?v)
+				(not (at ?m1 ?l))
+			)
+	)
+
+)

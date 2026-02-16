@@ -1,0 +1,30 @@
+(define
+	(problem pfile01)
+	(:domain  cooking)
+	(:objects
+		rice chickpeas - ingredient
+		container1 - container
+		home1 wp1 wp2 wp3 - location
+		robot1 - robot
+	)
+	(:htn
+		:parameters ()
+		:subtasks (and
+		(task0 (add_ingredient chickpeas container1))
+		(task1 (add_ingredient rice container1))
+		)
+		:ordering (and
+		(< task0 task1)
+		)
+	)
+	(:init
+
+		(free wp1)
+		(free wp2)
+		(free wp3)
+		(at pasta wp1)
+		(at chickpeas wp2)
+		(at container1 wp3)
+		(at robot1 home1)
+	)
+)

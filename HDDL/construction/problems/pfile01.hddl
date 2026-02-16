@@ -1,0 +1,28 @@
+(define
+	(problem pfile01)
+	(:domain  domain_htn)
+	(:objects
+		mat1 mat2 - material
+		home1 wp1 wp2 wp3 - location
+		wl1 - vehicle
+	)
+	(:htn
+		:parameters ()
+		:subtasks (and
+		(task0 (move_pile mat1 wp3))
+		(task1 (move_pile mat2 wp3))
+		)
+		:ordering (and
+			(< task0 task1)
+		)
+	)
+	(:init
+		(free wp1)
+		(free wp2)
+		(free wp3)
+		(at mat1 wp1)
+		(at mat2 wp2)
+		(at wl1 home1)
+		(can_load wl1)
+	)
+)
